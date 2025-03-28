@@ -1,0 +1,32 @@
+<launch>
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+
+    <!-- 加载参数 -->
+    <rosparam file="$(find jackal_nav)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find jackal_nav)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    
+    <rosparam file="$(find jackal_nav)/config/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find jackal_nav)/config/global_costmap_params.yaml" command="load" />
+    
+    <rosparam file="$(find jackal_nav)/config/base_local_planner_params.yaml" command="load" />
+    <rosparam file="$(find jackal_nav)/config/move_base_params.yaml" command="load" />
+    <rosparam file="$(find jackal_nav)/config/global_planner_params.yaml" command="load" />
+    <rosparam file="$(find jackal_nav)/config/teb_local_planner_params.yaml" command="load" />
+
+    <!-- 设置规划器 -->
+    <param name="base_global_planner" value="global_planner/GlobalPlanner" />
+    <param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS"/>
+
+    <!-- 启用恢复行为 -->
+    <param name="recovery_behavior_enabled" value="true" />
+    <param name="clearing_rotation_allowed" value="true" />
+
+    <!-- 更新频率 -->
+    <param name="controller_frequency" value="10.0" />
+    <param name="planner_frequency" value="2.0" />
+
+    <!-- 里程计话题重映射 -->
+    <remap from="odom" to="odometry/filtered" />
+
+  </node>
+</launch>

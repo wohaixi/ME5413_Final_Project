@@ -1,0 +1,18 @@
+<launch>
+  <!-- 启动仿真环境（可选） -->
+  <include file="$(find me5413_world)/launch/world.launch" />
+
+  <param name="/use_sim_time" value="true" />
+
+  <!-- 启动 Cartographer 节点 -->
+  <node name="cartographer_node" pkg="cartographer_ros" type="cartographer_node" output="screen"
+        args="-configuration_directory $(find me5413_world)/config -configuration_basename cartographer.lua" />
+    <remap from="scan" to="/front/scan"/>
+    <remap from="odom" to="/jackal_velocity_controller/odom"/>
+    <remap from="imu" to="/imu/data" />
+  <!-- Cartographer 的 occupancy grid 转换节点 -->
+  <node name="occupancy_grid_node" pkg="cartographer_ros" type="cartographer_occupancy_grid_node" output="screen" />
+
+  <!-- 可选：启动 RViz -->
+  <node pkg="rviz" type="rviz" name="rviz" output="screen" />
+</launch>

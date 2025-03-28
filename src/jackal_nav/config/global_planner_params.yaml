@@ -1,0 +1,12 @@
+GlobalPlanner:
+  allow_unknown: true               # 允许未知区域通过（如果地图边缘有未知区）
+  use_dijkstra: true                # 使用 Dijkstra 算法
+  use_quadratic: true               # 更平滑的路径代价
+  use_grid_path: false              # 设置为 true 会更直线化
+  old_navfn_behavior: false         # 禁止兼容模式
+
+  neutral_cost: 70                  # 路径代价偏移（默认50）
+  cost_factor: 2.5                  # 成本扩展因子（越大越远离障碍）
+  lethal_cost: 253                  # 致命障碍物的代价上限
+
+  outline_map: false

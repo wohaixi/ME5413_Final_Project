@@ -1,0 +1,37 @@
+<!-- 1.launch -->
+<launch>
+ <!-- bag的地址与名称
+  <arg name="bag_filename" default="$(env HOME)/bagfiles/dynamic_slam/wanxiangcheng_2/move-2.bag"/>-->
+  <arg name="bag_filename" default="$(env HOME)/bagfiles/final3.bag"/>
+
+
+  <!-- 使用bag的时间戳 -->
+  <param name="/use_sim_time" value="true" />
+
+  <!-- 启动cartographer -->
+  <node name="cartographer_node" pkg="cartographer_ros"
+      type="cartographer_node" args="
+          -configuration_directory $(find cartographer_ros)/configuration_files
+          -configuration_basename 1.lua"
+      output="screen">
+    <remap from="scan" to="/scan" />
+    <remap from="imu" to="/imu" />
+    <remap from="odom" to="/odometry/filtered" />
+
+  </node>
+
+  <!-- 生成ros格式的地图 -->
+  <node name="cartographer_occupancy_grid_node" pkg="cartographer_ros"
+      type="cartographer_occupancy_grid_node" args="-resolution 0.05" />
+
+  <!-- 启动rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" required="true" />
+  <!--args="-d $(find cartographer_ros)/configuration_files/xianyu_2d.rviz" />-->
+  
+  <!-- 启动rosbag -->
+  <node name="playbag" pkg="rosbag" type="play"
+      args="--clock $(arg bag_filename)" />
+
+  
+
+</launch>
